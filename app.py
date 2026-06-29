@@ -17,7 +17,7 @@ if api_key_gemini:
     try:
         genai.configure(api_key=api_key_gemini)
         # Model ismini daha güvenli olan 'gemini-1.5-flash-001' ile değiştirdik
-        model = genai.GenerativeModel('gemini-1.5-flash-001')
+        model = genai.GenerativeModel('gemini-pro')
         
         if "messages" not in st.session_state:
             st.session_state.messages = []
