@@ -16,8 +16,15 @@ with st.sidebar:
 if api_key_gemini:
     try:
         genai.configure(api_key=api_key_gemini)
-        # Model ismini daha güvenli olan 'gemini-1.5-flash-001' ile değiştirdik
-        model = genai.GenerativeModel('gemini-pro')
+        
+        # OTOMATİK MODEL SEÇİMİ (404 hatasını çözmek için)
+        available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
+        
+        if not available_models:
+            st.error("API anahtarınızla erişilebilecek bir model bulunamadı.")
+            st.stop()
+            
+        model = genai.GenerativeModel(available_models[0])
         
         if "messages" not in st.session_state:
             st.session_state.messages = []
@@ -43,6 +50,6 @@ if api_key_gemini:
                     st.error(f"Luna bir hata ile karşılaştı: {e}")
                     
     except Exception as e:
-        st.error(f"Model yüklenemedi: {e}")
+        st.error(f"Bağlantı hatası: {e}")
 else:
     st.info("Başlamak için sol menüden Gemini API anahtarınızı girin.")
