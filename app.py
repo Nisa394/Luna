@@ -16,7 +16,8 @@ with st.sidebar:
 if api_key_gemini:
     try:
         genai.configure(api_key=api_key_gemini)
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        # Model ismini daha güvenli olan 'gemini-1.5-flash-001' ile değiştirdik
+        model = genai.GenerativeModel('gemini-1.5-flash-001')
         
         if "messages" not in st.session_state:
             st.session_state.messages = []
@@ -39,10 +40,9 @@ if api_key_gemini:
                     st.markdown(response.text)
                     st.session_state.messages.append({"role": "assistant", "content": response.text})
                 except Exception as e:
-                    # İşte hata detayını veren kısım
                     st.error(f"Luna bir hata ile karşılaştı: {e}")
                     
     except Exception as e:
-        st.error(f"API Anahtarı yapılandırılamadı: {e}")
+        st.error(f"Model yüklenemedi: {e}")
 else:
     st.info("Başlamak için sol menüden Gemini API anahtarınızı girin.")
